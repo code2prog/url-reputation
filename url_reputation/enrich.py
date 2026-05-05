@@ -53,9 +53,13 @@ def enrich_dns(domain: str, timeout: int = 10) -> dict[str, Any]:
         # MX records
         try:
             answers = resolver.resolve(domain, "MX")
-            result["mx_records"] = [
-                {"priority": r.preference, "host": str(r.exchange).rstrip(".")} for r in answers
-            ]
+            mx_records = []
+            for r in answers:
+                preference = getattr(r, "preference", None)
+                exchange = getattr(r, "exchange", None)
+                if preference is not None and exchange is not None:
+                    mx_records.append({"priority": preference, "host": str(exchange).rstrip(".")})
+            result["mx_records"] = mx_records
         except Exception:
             pass
 

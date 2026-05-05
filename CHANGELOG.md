@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented here.
 
+## [v1.11.1] - 2026-05-05
+### Fixed
+- Python 3.9 CI type-check compatibility for MX DNS records when `dnspython` resolves to older type metadata.
+- Release state docs now point to `v1.11.1` as the latest patch release.
+
 ## [v1.11.0] - 2026-05-05
 ### Added
 - Python 3.13 and 3.14 package classifiers.
@@ -117,6 +122,7 @@ All notable changes to this project are documented here.
 ### Added
 - Initial release.
 
+[v1.11.1]: https://github.com/newuni/url-reputation/compare/v1.11.0...v1.11.1
 [v1.11.0]: https://github.com/newuni/url-reputation/compare/v1.10.0...v1.11.0
 [v1.10.0]: https://github.com/newuni/url-reputation/compare/v1.9.0...v1.10.0
 [v1.9.0]: https://github.com/newuni/url-reputation/compare/v1.8.0...v1.9.0

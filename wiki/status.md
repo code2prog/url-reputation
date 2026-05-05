@@ -12,8 +12,8 @@
 
 - Repo: https://github.com/newuni/url-reputation
 - Local path on this host: `/Users/unai/Documents/git/url-reputation`
-- Latest release: **v1.11.0** (Python 3.14 recommended runtime and release lane)
-- Previous release: v1.10.0 (TLS posture, scoring, and web UI parity)
+- Latest release: **v1.11.1** (Python 3.14 release lane + 3.9 compatibility CI fix)
+- Previous release: v1.11.0 (Python 3.14 recommended runtime and release lane)
 - Primary focus: **Developer-first unified URL/domain/IP reputation library** (multi-provider “front door”).
 
 ## Vision
