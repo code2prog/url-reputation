@@ -29,7 +29,7 @@ Paste error output here
 **Environment:**
  - OS: [e.g. Ubuntu 22.04, macOS 14]
  - Python version: [e.g. 3.14]
- - url-reputation version: [e.g. 1.11.1]
+ - url-reputation version: [e.g. 1.12.0]
  - Installation method: [e.g. pip, uvx, docker]
 
 **Additional context**

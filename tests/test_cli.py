@@ -8,6 +8,7 @@ from io import StringIO
 from unittest.mock import patch
 
 from url_reputation.cli import main, print_human_readable
+from url_reputation.update_check import UpdateCheckResult
 
 
 class TestPrintHumanReadable(unittest.TestCase):
@@ -100,6 +101,75 @@ class TestPrintHumanReadable(unittest.TestCase):
 
 class TestCLIMain(unittest.TestCase):
     """Tests for the main CLI entry point."""
+
+    def test_version_exits_without_url(self):
+        with (
+            patch("sys.argv", ["url-reputation", "--version"]),
+            patch("sys.stdout", new=StringIO()) as mock_stdout,
+            self.assertRaises(SystemExit) as ctx,
+        ):
+            main()
+
+        self.assertEqual(ctx.exception.code, 0)
+        self.assertIn("url-reputation", mock_stdout.getvalue())
+
+    @patch("url_reputation.cli.check_for_update")
+    def test_check_update_exits_without_url_when_current(self, mock_check_update):
+        mock_check_update.return_value = UpdateCheckResult(
+            current_version="1.11.1",
+            latest_version="1.11.1",
+            latest_url="https://github.com/newuni/url-reputation/releases/tag/v1.11.1",
+            update_available=False,
+        )
+
+        with (
+            patch("sys.argv", ["url-reputation", "--check-update"]),
+            patch("sys.stdout", new=StringIO()) as mock_stdout,
+            self.assertRaises(SystemExit) as ctx,
+        ):
+            main()
+
+        self.assertEqual(ctx.exception.code, 0)
+        self.assertIn("up to date", mock_stdout.getvalue())
+
+    @patch("url_reputation.cli.check_for_update")
+    def test_check_update_exits_one_when_update_available(self, mock_check_update):
+        mock_check_update.return_value = UpdateCheckResult(
+            current_version="1.11.1",
+            latest_version="1.12.0",
+            latest_url="https://github.com/newuni/url-reputation/releases/tag/v1.12.0",
+            update_available=True,
+        )
+
+        with (
+            patch("sys.argv", ["url-reputation", "--check-update"]),
+            patch("sys.stdout", new=StringIO()) as mock_stdout,
+            self.assertRaises(SystemExit) as ctx,
+        ):
+            main()
+
+        self.assertEqual(ctx.exception.code, 1)
+        self.assertIn("Update available", mock_stdout.getvalue())
+
+    @patch("url_reputation.cli.check_for_update")
+    def test_check_update_exits_two_when_check_fails(self, mock_check_update):
+        mock_check_update.return_value = UpdateCheckResult(
+            current_version="1.11.1",
+            latest_version=None,
+            latest_url=None,
+            update_available=False,
+            error="network down",
+        )
+
+        with (
+            patch("sys.argv", ["url-reputation", "--check-update"]),
+            patch("sys.stdout", new=StringIO()) as mock_stdout,
+            self.assertRaises(SystemExit) as ctx,
+        ):
+            main()
+
+        self.assertEqual(ctx.exception.code, 2)
+        self.assertIn("Could not check", mock_stdout.getvalue())
 
     @patch("url_reputation.cli.check_url_reputation")
     def test_basic_call(self, mock_check):

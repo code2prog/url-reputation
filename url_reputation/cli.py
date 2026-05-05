@@ -14,6 +14,7 @@ from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from datetime import datetime
 from typing import Any, cast
 
+from . import __version__
 from .checker import check_url_reputation
 from .enrichment.service import enrich_indicator  # kept for test/backwards-compat patching
 from .html_report import to_html_batch, to_html_single
@@ -26,6 +27,7 @@ from .output import (
     worst_verdict,
 )
 from .scoring import aggregate_risk_score
+from .update_check import check_for_update, format_update_result
 from .webhook import notify_on_risk
 
 
@@ -34,6 +36,17 @@ def main() -> None:
         description="Check URL/domain reputation across multiple security sources"
     )
     parser.add_argument("url", nargs="?", help="URL or domain to check (optional if using --file)")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"url-reputation {__version__}",
+        help="Show installed version and exit",
+    )
+    parser.add_argument(
+        "--check-update",
+        action="store_true",
+        help="Check GitHub Releases for a newer url-reputation version and exit",
+    )
     parser.add_argument("--file", "-f", help="File with URLs to check (one per line)", default=None)
     parser.add_argument(
         "--sources",
@@ -148,6 +161,11 @@ def main() -> None:
     )
 
     args = parser.parse_args()
+
+    if args.check_update:
+        update_result = check_for_update(__version__)
+        print(format_update_result(update_result))
+        raise SystemExit(2 if update_result.error else int(update_result.update_available))
 
     out_format = args.format
     if out_format is None:

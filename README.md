@@ -51,6 +51,16 @@ pip install url_reputation-*.whl
 url-reputation "https://example.com"
 ```
 
+### Version and update check
+
+```bash
+url-reputation --version
+url-reputation --check-update
+```
+
+`--check-update` checks the latest published GitHub Release and exits without running a URL scan.
+Exit code is `0` when up to date, `1` when an update is available, and `2` when the check fails.
+
 ### Using the script directly
 
 ```bash

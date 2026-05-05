@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## [v1.12.0] - 2026-05-05
+### Added
+- CLI version reporting with `url-reputation --version`.
+- Live GitHub Releases update detection with `url-reputation --check-update`.
+- Script-friendly update-check exit codes: `0` when up to date, `1` when an update is available, and `2` when the check fails.
+
+### Changed
+- Added `packaging` as a runtime dependency for PEP 440-safe version comparisons.
+- README now documents version and update-check commands.
+
 ## [v1.11.1] - 2026-05-05
 ### Fixed
 - Python 3.9 CI type-check compatibility for MX DNS records when `dnspython` resolves to older type metadata.
@@ -122,6 +132,7 @@ All notable changes to this project are documented here.
 ### Added
 - Initial release.
 
+[v1.12.0]: https://github.com/newuni/url-reputation/compare/v1.11.1...v1.12.0
 [v1.11.1]: https://github.com/newuni/url-reputation/compare/v1.11.0...v1.11.1
 [v1.11.0]: https://github.com/newuni/url-reputation/compare/v1.10.0...v1.11.0
 [v1.10.0]: https://github.com/newuni/url-reputation/compare/v1.9.0...v1.10.0
