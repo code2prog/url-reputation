@@ -2,6 +2,9 @@
 
 Multi-source URL/domain security analysis with aggregated risk scoring.
 
+Recommended runtime: **Python 3.14**. The package keeps compatibility with Python 3.9+
+for older environments, but development, CI coverage, releases, and Docker images target 3.14.
+
 ## Features
 
 - **10 reputation sources**: VirusTotal, URLScan.io, Google Safe Browsing, AbuseIPDB, URLhaus, PhishTank/OpenPhish, DNSBL, AlienVault OTX, IPQualityScore, ThreatFox

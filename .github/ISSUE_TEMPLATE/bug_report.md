@@ -28,8 +28,8 @@ Paste error output here
 
 **Environment:**
  - OS: [e.g. Ubuntu 22.04, macOS 14]
- - Python version: [e.g. 3.11]
- - url-reputation version: [e.g. 1.5.0]
+ - Python version: [e.g. 3.14]
+ - url-reputation version: [e.g. 1.11.0]
  - Installation method: [e.g. pip, uvx, docker]
 
 **Additional context**

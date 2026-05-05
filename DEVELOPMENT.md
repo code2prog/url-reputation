@@ -1,13 +1,13 @@
 # Development (url-reputation)
 
-Repo path on this host: `/root/clawd/skills/url-reputation`
+Examples assume you are running commands from the repository root.
 
 ## Option A — Dev via Docker (recommended)
 
 ### Build dev image
 
 ```bash
-cd /root/clawd/skills/url-reputation
+cd url-reputation
 
 docker build -t url-reputation-dev -f web/Dockerfile.dev .
 ```
@@ -28,7 +28,7 @@ docker run --rm -p 8095:8000 url-reputation-dev
 ## Option B — Local venv
 
 ```bash
-cd /root/clawd/skills/url-reputation
+cd url-reputation
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip

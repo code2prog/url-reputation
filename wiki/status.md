@@ -11,9 +11,9 @@
 ## Current snapshot
 
 - Repo: https://github.com/newuni/url-reputation
-- Local path on this host: `/root/clawd/skills/url-reputation`
-- Latest release: **v1.7.0** (quality hardening phase: mypy/ruff tightened in progressive blocks)
-- Previous release: v1.6.0 (Polish phase: tests, docs, performance, CI/CD)
+- Local path on this host: `/Users/unai/Documents/git/url-reputation`
+- Latest release: **v1.11.0** (Python 3.14 recommended runtime and release lane)
+- Previous release: v1.10.0 (TLS posture, scoring, and web UI parity)
 - Primary focus: **Developer-first unified URL/domain/IP reputation library** (multi-provider “front door”).
 
 ## Vision
@@ -443,10 +443,10 @@ Goal: external providers can be added without editing core.
 - **Deliverables:**
   - Workflow que corre tests + ruff + mypy en push
   - Workflow de release: tag → PyPI + GitHub Release con changelog
-  - Test en múltiples Python (3.10, 3.11, 3.12)
+  - Test en múltiples Python (3.9-3.14; 3.14 as recommended lane)
 - **DoD:** Release v1.6.0 publicada vía CI con un click
 - **Notes:**
-  - Created `.github/workflows/ci.yml` with matrix testing (Python 3.10, 3.11, 3.12)
+  - Created `.github/workflows/ci.yml` with matrix testing (Python 3.9-3.14)
   - Created `.github/workflows/release.yml` with PyPI publishing and GitHub Releases
   - CI runs tests, ruff, mypy on push and PR
   - Release triggers on v* tags
@@ -648,7 +648,7 @@ Execution mode: continue in blocks, but run multiple blocks per cycle when safe.
 #### Q15 — Coverage gate in CI (initial threshold)
 - **Status:** DONE
 - **Deliverables:**
-  - Enforced coverage gate in CI on canonical lane (`ubuntu-latest`, Python 3.11)
+  - Enforced coverage gate in CI on canonical lane (`ubuntu-latest`, Python 3.14)
   - Added `--cov-fail-under=60` baseline (current measured coverage ~64%)
 - **DoD:** CI enforces coverage floor and remains green
 

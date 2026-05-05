@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here.
 
+## [v1.11.0] - 2026-05-05
+### Added
+- Python 3.13 and 3.14 package classifiers.
+- CI coverage for Python 3.9 through 3.14, with Python 3.14 as the primary coverage, release, benchmark, macOS, and Windows lane.
+
+### Changed
+- Docker and Docker development images now use `python:3.14-slim`.
+- Release workflow now builds and validates on Python 3.14.
+- README, contributor docs, issue template, and status docs now present Python 3.14 as the recommended runtime while keeping Python 3.9+ compatibility.
+- CI Docker build detection now uses `web/Dockerfile`, matching the repository layout.
+- Benchmarks now run on pushes to both `main` and `master`.
+
+### Fixed
+- Release workflow now checks Ruff formatting before publishing.
+- Status and development docs no longer reference stale local paths or older release state.
+
 ## [v1.10.0] - 2026-02-24
 ### Added
 - Stronger TLS posture analysis in `tls` enrichment:
@@ -101,6 +117,7 @@ All notable changes to this project are documented here.
 ### Added
 - Initial release.
 
+[v1.11.0]: https://github.com/newuni/url-reputation/compare/v1.10.0...v1.11.0
 [v1.10.0]: https://github.com/newuni/url-reputation/compare/v1.9.0...v1.10.0
 [v1.9.0]: https://github.com/newuni/url-reputation/compare/v1.8.0...v1.9.0
 [v1.8.0]: https://github.com/newuni/url-reputation/compare/v1.7.0...v1.8.0

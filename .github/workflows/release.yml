@@ -21,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
 
       - name: Install dependencies
@@ -31,6 +31,9 @@ jobs:
 
       - name: Run Ruff
         run: ruff check .
+
+      - name: Run Ruff format check
+        run: ruff format --check .
 
       - name: Run mypy
         run: mypy url_reputation
@@ -52,7 +55,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
 
       - name: Install build dependencies
         run: |

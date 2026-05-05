@@ -23,12 +23,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
         os: [ubuntu-latest]
         include:
-          - python-version: "3.11"
+          - python-version: "3.14"
             os: macos-latest
-          - python-version: "3.11"
+          - python-version: "3.14"
             os: windows-latest
 
     steps:
@@ -59,7 +59,7 @@ jobs:
         run: pytest tests/ -v --tb=short
 
       - name: Generate coverage report (gated baseline)
-        if: matrix.python-version == '3.11' && matrix.os == 'ubuntu-latest'
+        if: matrix.python-version == '3.14' && matrix.os == 'ubuntu-latest'
         run: |
           pytest tests/ \
             --cov=url_reputation \
@@ -68,7 +68,7 @@ jobs:
             --cov-fail-under=70
 
       - name: Upload coverage to Codecov
-        if: matrix.python-version == '3.11' && matrix.os == 'ubuntu-latest'
+        if: matrix.python-version == '3.14' && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
@@ -80,7 +80,7 @@ jobs:
   benchmark:
     name: Performance Benchmarks
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
 
     steps:
       - name: Checkout repository
@@ -89,7 +89,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
           cache: pip
 
       - name: Install dependencies
@@ -119,11 +119,15 @@ jobs:
       - name: Detect Dockerfile
         id: dockerfile
         run: |
-          if [ -f Dockerfile ]; then
+          if [ -f web/Dockerfile ]; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "path=web/Dockerfile" >> "$GITHUB_OUTPUT"
+          elif [ -f Dockerfile ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "path=Dockerfile" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
-            echo "No Dockerfile found at repo root; skipping Docker build test."
+            echo "No Dockerfile found; skipping Docker build test."
           fi
 
       - name: Set up Docker Buildx
@@ -135,6 +139,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ${{ steps.dockerfile.outputs.path }}
           push: false
           load: true
           tags: url-reputation:test

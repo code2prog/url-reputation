@@ -6,7 +6,8 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 ### Prerequisites
 
-- Python 3.9 or higher
+- Python 3.14 recommended for development
+- Python 3.9 or higher for compatibility testing
 - Git
 
 ### Clone and Setup
