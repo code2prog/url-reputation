@@ -5,14 +5,13 @@ FastAPI backend for the url-reputation checker
 
 import os
 import sys
-import secrets
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, cast
 
 import uvicorn
-from fastapi import FastAPI, HTTPException, Query, Request
-from fastapi.responses import FileResponse, Response
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -29,24 +28,6 @@ app = FastAPI(
     description="Multi-source URL/domain security analysis",
     version="1.11.1",
 )
-
-
-@app.middleware("http")
-async def protect_hosted_app(request: Request, call_next):
-    password = os.getenv("APP_PASSWORD")
-    if os.getenv("RENDER") and not password:
-        return Response("Password not configured", status_code=503)
-    if password:
-        import base64
-        try:
-            scheme, token = request.headers.get("authorization", "").split(" ", 1)
-            username, supplied = base64.b64decode(token, validate=True).decode().split(":", 1)
-            if scheme.lower() == "basic" and secrets.compare_digest(username, "admin") and secrets.compare_digest(supplied, password):
-                return await call_next(request)
-        except (ValueError, UnicodeError):
-            pass
-        return Response("Authentication required", status_code=401, headers={"WWW-Authenticate": 'Basic realm="URL checker"'})
-    return await call_next(request)
 
 
 class CheckRequest(BaseModel):
