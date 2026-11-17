@@ -3,23 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Reputation Checker</title>
+    <title>WhatArmy LinkChecker</title>
+    <link rel="icon" href="https://securesend.whatarmy.com/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>try { document.documentElement.dataset.theme = localStorage.getItem("linkchecker-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); } catch (_) { document.documentElement.dataset.theme = "light"; }</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         [x-cloak] { display: none !important; }
+        body { font-family: 'Space Grotesk', sans-serif; background-image: radial-gradient(rgba(96,165,250,.08) 1px, transparent 1px); background-size: 30px 30px; }
+        h1, h2, h3, .brand { font-family: Sora, sans-serif; }
+        .brand { font-size: 1.3rem; font-weight: 700; letter-spacing: -.06em; }
+        .brand sup { font-family: 'Space Grotesk', sans-serif; font-size: .58rem; letter-spacing: 0; margin-left: .35rem; color: #60a5fa; }
+        .theme-toggle { border: 1px solid #475569; border-radius: 999px; padding: .55rem .9rem; font-size: .8rem; font-weight: 600; }
+        .hero-label { color: #60a5fa; font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+        .hero-title { letter-spacing: -.055em; line-height: 1.13; }
+        .intro-card { border: 1px solid #334155; border-radius: 1.25rem; }
+        html[data-theme="light"] body { color: #1e293b; background-color: #f8fafc; background-image: radial-gradient(rgba(30,64,175,.08) 1px, transparent 1px), linear-gradient(145deg, #f8fafc, #e2e8f0); }
+        html[data-theme="light"] .theme-toggle { border-color: #cbd5e1; background: rgba(255,255,255,.7); }
+        html[data-theme="light"] .brand sup, html[data-theme="light"] .hero-label { color: #2563eb; }
+        html[data-theme="light"] .intro-card { border-color: #dbe4f0; }
+        html[data-theme="light"] .bg-gray-800 { background-color: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(30,64,175,.08); }
+        html[data-theme="light"] .bg-gray-700, html[data-theme="light"] .bg-gray-700\/50, html[data-theme="light"] .bg-gray-700\/60 { background-color: #f1f5f9; }
+        html[data-theme="light"] .border-gray-600 { border-color: #cbd5e1; }
+        html[data-theme="light"] .text-white, html[data-theme="light"] .text-gray-100, html[data-theme="light"] .text-gray-200 { color: #0f172a; }
+        html[data-theme="light"] .text-gray-300 { color: #334155; }
+        html[data-theme="light"] .text-gray-400, html[data-theme="light"] .text-gray-500 { color: #64748b; }
+        html[data-theme="light"] .text-blue-300, html[data-theme="light"] .text-blue-400 { color: #1d4ed8; }
+        html[data-theme="light"] .text-green-200, html[data-theme="light"] .text-green-300, html[data-theme="light"] .text-green-400, html[data-theme="light"] .text-emerald-400 { color: #047857; }
+        html[data-theme="light"] .text-red-200, html[data-theme="light"] .text-red-300, html[data-theme="light"] .text-red-400 { color: #b91c1c; }
+        html[data-theme="light"] .text-amber-200, html[data-theme="light"] .text-amber-300, html[data-theme="light"] .text-amber-400, html[data-theme="light"] .text-yellow-400 { color: #a16207; }
+        html[data-theme="light"] .text-cyan-200, html[data-theme="light"] .text-cyan-300, html[data-theme="light"] .text-cyan-400 { color: #0e7490; }
+        html[data-theme="light"] [class*="bg-green-900"] { background-color: #ecfdf5; border-color: #a7f3d0; }
+        html[data-theme="light"] [class*="bg-red-900"] { background-color: #fef2f2; border-color: #fecaca; }
+        html[data-theme="light"] [class*="bg-amber-900"] { background-color: #fffbeb; border-color: #fde68a; }
+        html[data-theme="light"] [class*="bg-cyan-900"] { background-color: #ecfeff; border-color: #a5f3fc; }
+        html[data-theme="light"] button.bg-blue-600 { color: white; }
+        html[data-theme="light"] input::placeholder { color: #94a3b8; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-6 md:py-8 max-w-4xl" x-data="urlChecker()">
         <!-- Header -->
-        <header class="text-center mb-6 md:mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">🔍 URL Reputation Checker</h1>
-            <p class="text-gray-400 text-sm md:text-base">Multi-source security analysis for URLs, domains and IPs</p>
+        <nav class="flex items-center justify-between gap-4 mb-16 md:mb-20" aria-label="Main navigation">
+            <a href="/" class="brand text-white">WhatArmy <sup>LinkChecker</sup></a>
+            <button type="button" class="theme-toggle" @click="toggleTheme" :aria-label="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'" x-text="theme === 'dark' ? '☀ Light' : '☾ Dark'"></button>
+        </nav>
+        <header class="text-center mb-8 md:mb-10">
+            <p class="hero-label mb-4">A little more confidence online</p>
+            <h1 class="hero-title text-4xl md:text-5xl font-bold text-white mb-5">Check a link<br>before you click.</h1>
+            <p class="text-gray-400 text-base md:text-lg max-w-xl mx-auto">Check URLs, domains and IP addresses against multiple security sources, all in one place.</p>
         </header>
 
         <!-- Input Form -->
-        <div class="bg-gray-800 rounded-lg p-4 md:p-6 mb-6 shadow-lg">
+        <div class="intro-card bg-gray-800 p-5 md:p-8 mb-6 shadow-lg">
             <form @submit.prevent="checkUrl" class="space-y-4" novalidate>
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Enter URL, domain or IP</label>
@@ -27,7 +66,7 @@
                         <input
                             type="text"
                             x-model="url"
-                            placeholder="example.com or https://example.com"
+                            placeholder="Paste a URL, domain or IP address"
                             inputmode="url"
                             autocapitalize="off"
                             autocorrect="off"
@@ -41,7 +80,7 @@
                             class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg font-semibold transition-colors"
                             :disabled="loading || !url.trim()"
                         >
-                            <span x-show="!loading">Check</span>
+                            <span x-show="!loading">Check link →</span>
                             <span x-show="loading" class="flex items-center justify-center gap-2">
                                 <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
@@ -313,6 +352,8 @@
             </p>
         </div>
 
+        <p class="text-center text-gray-500 text-sm mt-8">No security check can guarantee that a link is safe. Always use caution.</p>
+
         <!-- Footer -->
         <footer class="text-center mt-12 text-gray-500 text-sm">
             <p>Powered by <a href="https://github.com/newuni/url-reputation" class="text-blue-400 hover:underline">url-reputation</a> 🐙</p>
@@ -323,6 +364,12 @@
         function urlChecker() {
             return {
                 url: '',
+                theme: document.documentElement.dataset.theme,
+                toggleTheme() {
+                    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.dataset.theme = this.theme;
+                    try { localStorage.setItem('linkchecker-theme', this.theme); } catch (_) {}
+                },
                 loading: false,
                 error: null,
                 result: null,
